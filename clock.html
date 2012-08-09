@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <script type = "text/javascript">
+            window.onload=doload;
+            
+            function doload(){
+                
+                if(document.getElementById('canvas').getContext)context=document.getElementById('canvas').getContext('2d');
+                context.save();
+
+                context.font = "15px Arial";
+                clock();
+            }
+
+            function clock(){
+
+                context.fillStyle   = '#CC5422'; // set canvas background color
+                context.fillRect  (0,   0, 350, 350);  // now fill the canvas
+
+                context.clearRect(0, 0, 400, 200);
+                var ctime = (new Date());
+                var h = ctime.getHours();
+                var m = ctime.getMinutes();
+                var s = ctime.getSeconds();
+                var clockString = "" + h + ":" + m + ":" + s;
+                context.fillStyle    = '#FFFFFF';  // set text color
+                context.font         = 'bold 9px sans-serif';  // set text font
+                    
+                context.fillText(clockString, 10, 15);
+
+                context.beginPath();
+                context.lineWidth = "3";
+                context.moveTo(10, 110);
+                context.lineTo(390, 110);
+                context.stroke();
+
+                context.beginPath();
+                context.lineWidth = "3";
+                context.moveTo(10, 120);
+                context.lineTo(390, 120);
+                context.stroke();
+
+                context.beginPath();
+                context.lineWidth = "3";
+                context.moveTo(10, 130);
+                context.lineTo(390, 130);
+                context.stroke();
+
+                t=setTimeout(function(){doload()},500);
+            }
+
+        </script>
+    </head>
+    <body>
+        <canvas width = "400" height = "200" id = "canvas"></canvas>
+    </body>
+</html>
