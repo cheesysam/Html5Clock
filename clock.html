@@ -1,8 +1,12 @@
 <html>
     <head>
         <script type = "text/javascript">
-            window.onload=doload;
             
+            window.onload=doload;
+            var barStart = 10;
+            var barEnd = 390;
+            var barLength = 0
+
             function doload(){
                 
                 if(document.getElementById('canvas').getContext)context=document.getElementById('canvas').getContext('2d');
@@ -14,36 +18,43 @@
 
             function clock(){
 
-                context.fillStyle   = '#CC5422'; // set canvas background color
-                context.fillRect  (0,   0, 350, 350);  // now fill the canvas
-
                 context.clearRect(0, 0, 400, 200);
                 var ctime = (new Date());
                 var h = ctime.getHours();
+                if (h < 10){
+                    h = "0" + h;
+                }
                 var m = ctime.getMinutes();
+                if (m < 10){
+                    m = "0" + m;
+                }
                 var s = ctime.getSeconds();
-                var clockString = "" + h + ":" + m + ":" + s;
-                context.fillStyle    = '#FFFFFF';  // set text color
-                context.font         = 'bold 9px sans-serif';  // set text font
-                    
+                if (s < 10){
+                    s = "0" + s;
+                }
+
+                var clockString = "" + h + ":" + m + ":" + s
                 context.fillText(clockString, 10, 15);
 
                 context.beginPath();
                 context.lineWidth = "3";
+                barLength = ((barEnd - barStart) / 24) * h
                 context.moveTo(10, 110);
-                context.lineTo(390, 110);
+                context.lineTo(barLength + barStart, 110);
                 context.stroke();
 
                 context.beginPath();
                 context.lineWidth = "3";
+                barLength = ((barEnd - barStart) / 60) * m
                 context.moveTo(10, 120);
-                context.lineTo(390, 120);
+                context.lineTo(barLength + barStart, 120);
                 context.stroke();
 
                 context.beginPath();
                 context.lineWidth = "3";
+                barLength = ((barEnd - barStart) / 60) * s
                 context.moveTo(10, 130);
-                context.lineTo(390, 130);
+                context.lineTo(barLength + barStart, 130);
                 context.stroke();
 
                 t=setTimeout(function(){doload()},500);
