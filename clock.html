@@ -33,31 +33,33 @@
                     s = "0" + s;
                 }
 
+                var ms = ctime.getMilliseconds();
+
                 var clockString = "" + h + ":" + m + ":" + s
                 context.fillText(clockString, 10, 15);
 
                 context.beginPath();
                 context.lineWidth = "3";
-                barLength = ((barEnd - barStart) / 24) * h
+                barLength = (((barEnd - barStart) / 24) * h) + (((barEnd - barStart) / 1440) * m)
                 context.moveTo(10, 110);
                 context.lineTo(barLength + barStart, 110);
                 context.stroke();
 
                 context.beginPath();
                 context.lineWidth = "3";
-                barLength = ((barEnd - barStart) / 60) * m
+                barLength = (((barEnd - barStart) / 60) * m) + (((barEnd - barStart) / 3600) * s)
                 context.moveTo(10, 120);
                 context.lineTo(barLength + barStart, 120);
                 context.stroke();
 
                 context.beginPath();
                 context.lineWidth = "3";
-                barLength = ((barEnd - barStart) / 60) * s
+                barLength = (((barEnd - barStart) / 60000) * ms) + (((barEnd - barStart) / 60) * s)
                 context.moveTo(10, 130);
                 context.lineTo(barLength + barStart, 130);
                 context.stroke();
 
-                t=setTimeout(function(){doload()},500);
+                t=setTimeout(function(){doload()},5);
             }
 
         </script>
