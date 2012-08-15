@@ -5,7 +5,9 @@
             window.onload=doload;
             var barStart = 10;
             var barEnd = 390;
-            var barLength = 0
+            var barLength = 0;
+
+            var barGroupHeightOffset = 50;
 
             function doload(){
                 
@@ -39,24 +41,38 @@
                 context.fillText(clockString, 10, 15);
 
                 context.beginPath();
-                context.lineWidth = "3";
+                context.moveTo(barStart, barGroupHeightOffset);
+                context.lineTo(barEnd, barGroupHeightOffset);
+                context.moveTo(barStart, barGroupHeightOffset + 10);
+                context.lineTo(barEnd, barGroupHeightOffset + 10);
+                context.moveTo(barStart, barGroupHeightOffset + 20);
+                context.lineTo(barEnd, barGroupHeightOffset + 20);
+                context.lineWidth = 2;
+                context.strokeStyle = "#404040";
+                context.stroke();
+
+                context.beginPath();
+                context.lineWidth = 5;
                 barLength = (((barEnd - barStart) / 24) * h) + (((barEnd - barStart) / 1440) * m)
-                context.moveTo(10, 110);
-                context.lineTo(barLength + barStart, 110);
+                context.moveTo(barStart, barGroupHeightOffset);
+                context.lineTo(barLength + barStart, barGroupHeightOffset);
+                context.strokeStyle = "#185B63";
                 context.stroke();
 
                 context.beginPath();
-                context.lineWidth = "3";
+                context.lineWidth = 5;
                 barLength = (((barEnd - barStart) / 60) * m) + (((barEnd - barStart) / 3600) * s)
-                context.moveTo(10, 120);
-                context.lineTo(barLength + barStart, 120);
+                context.moveTo(barStart, barGroupHeightOffset + 10);
+                context.lineTo(barLength + barStart, barGroupHeightOffset + 10);
+                context.strokeStyle = "#C0261C";
                 context.stroke();
 
                 context.beginPath();
-                context.lineWidth = "3";
+                context.lineWidth = 5;
                 barLength = (((barEnd - barStart) / 60000) * ms) + (((barEnd - barStart) / 60) * s)
-                context.moveTo(10, 130);
-                context.lineTo(barLength + barStart, 130);
+                context.moveTo(barStart, barGroupHeightOffset + 20);
+                context.lineTo(barLength + barStart, barGroupHeightOffset + 20);
+                context.strokeStyle = "#C59538";
                 context.stroke();
 
                 t=setTimeout(function(){doload()},5);
