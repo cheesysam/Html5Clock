@@ -14,30 +14,30 @@
                 if(document.getElementById('canvas').getContext)context=document.getElementById('canvas').getContext('2d');
                 context.save();
 
-                context.font = "15px Arial";
-                clock();
+                lineFillClock();
+                //roundClock();
             }
-
-            function clock(){
+            
+            function handleZero(timeComponent){
+                if(timeComponent < 10){
+                    return "0" + timeComponent;
+                }else{
+                    return timeComponent;
+                }
+            }
+            function lineFillClock(){
 
                 context.clearRect(0, 0, 400, 200);
                 var ctime = (new Date());
-                var h = ctime.getHours();
-                if (h < 10){
-                    h = "0" + h;
-                }
-                var m = ctime.getMinutes();
-                if (m < 10){
-                    m = "0" + m;
-                }
-                var s = ctime.getSeconds();
-                if (s < 10){
-                    s = "0" + s;
-                }
+                var h = handleZero(ctime.getHours());
+                var m = handleZero(ctime.getMinutes());
+                var s = handleZero(ctime.getSeconds());
 
                 var ms = ctime.getMilliseconds();
 
                 var clockString = "" + h + ":" + m + ":" + s
+                //context.textAlign = "center";
+                context.font = "15px Arial";
                 context.fillText(clockString, 10, 15);
 
                 context.beginPath();
@@ -74,6 +74,11 @@
                 context.lineTo(barLength + barStart, barGroupHeightOffset + 20);
                 context.strokeStyle = "#C59538";
                 context.stroke();
+
+                t=setTimeout(function(){doload()},5);
+            }
+
+            function roundClock(){
 
                 t=setTimeout(function(){doload()},5);
             }
