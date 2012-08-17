@@ -14,8 +14,8 @@
                 if(document.getElementById('canvas').getContext)context=document.getElementById('canvas').getContext('2d');
                 context.save();
 
-                lineFillClock();
-                //roundClock();
+                //lineFillClock();
+                roundClock();
             }
             
             function handleZero(timeComponent){
@@ -79,6 +79,35 @@
             }
 
             function roundClock(){
+                context.clearRect(0, 0, 400, 200);
+                
+                var ctime = (new Date());
+                var h = handleZero(ctime.getHours());
+                var m = handleZero(ctime.getMinutes());
+                var s = handleZero(ctime.getSeconds());
+                var ms = ctime.getMilliseconds();
+
+                var clockString = "" + h + ":" + m + ":" + s
+                //context.textAlign = "center";
+                context.font = "15px Arial";
+                context.fillText(clockString, 10, 15)
+
+                context.beginPath();
+                context.lineWidth = 10;
+                context.moveTo(100, 20);
+                //context.lineTo(100, 19);
+                context.arcTo(200, 20, 145, 110, 90);
+                context.stroke();
+
+                /*context.beginPath();
+                context.lineWidth = 10;
+                context.arc(100, 100, 80, 1.5 * Math.PI, (((Math.PI * 1.5) / 60) * m) + ((Math.PI * 1.5) / 3600) * s , false);
+                context.stroke();
+
+                context.beginPath();
+                context.lineWidth = 10;
+                context.arc(100, 100, 70, 1.5 * Math.PI, (((0) / 24) * h) + ((Math.PI * 1.5) / 1440) * m , false);
+                context.stroke();*/
 
                 t=setTimeout(function(){doload()},5);
             }
