@@ -138,7 +138,7 @@ h1 {
                 // Seconds
                 context_round.beginPath();
                 context_round.lineWidth = 10;
-                context_round.arc(100, 100, 60, 1.5 * Math.PI, (-0.5 + ((2.0/60.0)*s))* Math.PI, false);
+                context_round.arc(100, 100, 60, 1.5 * Math.PI, (-0.5 + ((2.0/60000.0)*(s*1000.0 + ms)))* Math.PI, false);
                 context_round.strokeStyle = "#C59538";
                 context_round.stroke();
                 
