@@ -107,12 +107,12 @@ body {
 
                 canvas = document.getElementById('canvas_round')
                
-                var clockString = "" + h + ":" + m + ":" + s;
+                var clockString = "" + h + " " + m + " " + s;
                 var x = canvas.width / 2;
                 var y = canvas.height / 2;
                 
                 context_round.textAlign = "center";
-                context_round.font = "15px Arial";
+                context_round.font = "15px Consolas";
 				context_round.fillStyle = "#95B285";
                 context_round.fillText(clockString, x, y);
 				
@@ -155,13 +155,6 @@ body {
                 context_round.strokeStyle = "#8C1D74";
                 context_round.stroke();
                 
-                 // Milliseconds
-                context_round.beginPath();
-                context_round.lineWidth = 10;
-                context_round.arc(100, 100, 50, 1.5 * Math.PI, (-0.5 + ((2.0/1000.0)*ms))* Math.PI, false);
-                context_round.strokeStyle = "#A19560";
-                context_round.stroke();
-
                 t=setTimeout(function(){doload()},5);
             }
 
