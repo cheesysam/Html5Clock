@@ -13,21 +13,31 @@ body {
             var barLength = 0;
 
             var barGroupHeightOffset = 10;
+            var context_line = null;
+            var context_round = null;
 
             function doload()
             {
                 if(document.getElementById('canvas_line').getContext)
                 {
+                  if(context_line==null)
+                  {
                     context_line=document.getElementById('canvas_line').getContext('2d');
+                    context_line.save();
+                  }
                 }
-                context_line.save();
+                
                 
                 if(document.getElementById('canvas_round').getContext)
                 {
+                  //if(context_round==null)
+                  {
                     context_round=document.getElementById('canvas_round').getContext('2d');
+                    
+                  }
                 }
                 context_round.save();
-                                
+                
                 lineFillClock();
                 roundClock();
             }
@@ -49,8 +59,8 @@ body {
                 context_line.clearRect(0, 0, 200, 200);
                 var ctime = (new Date());
                 var h = handleZero(ctime.getHours());
-                var m = handleZero(ctime.getMinutes());
-                var s = handleZero(ctime.getSeconds());
+                var mins = handleZero(ctime.getMinutes());
+                var secs = handleZero(ctime.getSeconds());
 
                 var ms = ctime.getMilliseconds();
 
@@ -68,7 +78,7 @@ body {
                 // Hours
                 context_line.beginPath();
                 context_line.lineWidth = 5;
-                barLength = (((barEnd - barStart) / 24) * h) + (((barEnd - barStart) / 1440) * m)
+                barLength = (((barEnd - barStart) / 24) * h) + (((barEnd - barStart) / 1440) * mins)
                 context_line.moveTo(barStart, barGroupHeightOffset);
                 context_line.lineTo(barLength + barStart, barGroupHeightOffset);
                 context_line.strokeStyle = "#95B285";
@@ -77,7 +87,7 @@ body {
                 // 
                 context_line.beginPath();
                 context_line.lineWidth = 5;
-                barLength = (((barEnd - barStart) / 60) * m) + (((barEnd - barStart) / 3600) * s)
+                barLength = (((barEnd - barStart) / 60) * mins) + (((barEnd - barStart) / 3600) * secs)
                 context_line.moveTo(barStart, barGroupHeightOffset + 10);
                 context_line.lineTo(barLength + barStart, barGroupHeightOffset + 10);
                 context_line.strokeStyle = "#C1AF27";
@@ -86,7 +96,7 @@ body {
                 // Seconds
                 context_line.beginPath();
                 context_line.lineWidth = 5;
-                barLength = (((barEnd - barStart) / 60000) * ms) + (((barEnd - barStart) / 60) * s)
+                barLength = (((barEnd - barStart) / 60000) * ms) + (((barEnd - barStart) / 60) * secs)
                 context_line.moveTo(barStart, barGroupHeightOffset + 20);
                 context_line.lineTo(barLength + barStart, barGroupHeightOffset + 20);
                 context_line.strokeStyle = "#8C1D74";
@@ -100,14 +110,14 @@ body {
                 context_round.clearRect(0, 0, 200, 200);
                 
                 var ctime = (new Date());
-                var h = handleZero(ctime.getHours());
-                var m = handleZero(ctime.getMinutes());
-                var s = handleZero(ctime.getSeconds());
+                var h = ctime.getHours();
+                var mins = ctime.getMinutes();
+                var secs = ctime.getSeconds();
                 var ms = ctime.getMilliseconds();
 
                 canvas = document.getElementById('canvas_round')
                
-                var clockString = "" + h + " " + m + " " + s;
+                var clockString = "" + handleZero(h) + " " + handleZero(mins) + " " + handleZero(secs);
                 var x = canvas.width / 2;
                 var y = canvas.height / 2;
                 
@@ -137,21 +147,21 @@ body {
                 // Hours
                 context_round.beginPath();
                 context_round.lineWidth = 10;
-                context_round.arc(100, 100, 80, 1.5 * Math.PI, (-0.5 + ((2.0/24.0)*h))* Math.PI, false);
+                context_round.arc(100, 100, 80, 1.5 * Math.PI, (-0.5 + ((2.0/1440.0)*(h * 60.0 + mins)))* Math.PI, false);
                 context_round.strokeStyle = "#95B285";
                 context_round.stroke();
                 
                 // Minutes
                 context_round.beginPath();
                 context_round.lineWidth = 10;
-                context_round.arc(100, 100, 70, 1.5 * Math.PI, (-0.5 + ((2.0/60.0)*m))* Math.PI, false);
+                context_round.arc(100, 100, 70, 1.5 * Math.PI, (-0.5 + ((2.0/3600.0)*(mins * 60.0 + secs))) * Math.PI, false);
                 context_round.strokeStyle = "#C1AF27";
                 context_round.stroke();
                 
                 // Seconds
                 context_round.beginPath();
                 context_round.lineWidth = 10;
-                context_round.arc(100, 100, 60, 1.5 * Math.PI, (-0.5 + ((2.0/60000.0)*(s*1000.0 + ms)))* Math.PI, false);
+                context_round.arc(100, 100, 60, 1.5 * Math.PI, (-0.5 + ((2.0/60000.0)*(secs * 1000.0 + ms))) * Math.PI, false);
                 context_round.strokeStyle = "#8C1D74";
                 context_round.stroke();
                 
