@@ -1,47 +1,49 @@
-<style>
+<!DOCTYPE html>
+<html>
+    <head>
+	<title>Smooth Clock</title>
+	<style>
 body {
     background-color: #482483;
 }
 </style>
-<html>
-    <head>
-        <script type = "text/javascript">
+        
+    </head>
+    <body>
+        <div class="parent">
+            <div class="row">
+                <div class="col1"> <canvas width = "200" height = "200" id = "canvas_round"></canvas></div>
+            </div>
+            <div class="row">
+                <div class="col1"> <canvas width = "200" height = "200" id = "canvas_line"></canvas></div>
+            </div>
+        </div>
+		<script type = "text/javascript">
             
-            window.onload=doload;
+            var line_canvas = document.getElementById("canvas_line");
+			var line_context = line_canvas.getContext('2d');
+			
+			var round_canvas = document.getElementById("canvas_round");
+			var round_context = round_canvas.getContext('2d');
+ 
+			var line_canvas_width = line_canvas.width;
+			var line_canvas_height = line_canvas.height;
+			
+			var round_canvas_width = round_canvas.width;
+			var round_canvas_height = round_canvas.height;
+			 
+			var angle = 0;
+			 
+			var requestAnimationFrame = window.requestAnimationFrame || 
+										window.mozRequestAnimationFrame || 
+										window.webkitRequestAnimationFrame || 
+										window.msRequestAnimationFrame;
             var barStart = 10;
-            var barEnd = 199;
+            var barEnd = line_canvas_width - 10;
             var barLength = 0;
 
             var barGroupHeightOffset = 10;
-            var context_line = null;
-            var context_round = null;
-
-            function doload()
-            {
-                if(document.getElementById('canvas_line').getContext)
-                {
-                  if(context_line==null)
-                  {
-                    context_line=document.getElementById('canvas_line').getContext('2d');
-                    context_line.save();
-                  }
-                }
-                
-                
-                if(document.getElementById('canvas_round').getContext)
-                {
-                  //if(context_round==null)
-                  {
-                    context_round=document.getElementById('canvas_round').getContext('2d');
-                    
-                  }
-                }
-                context_round.save();
-                
-                lineFillClock();
-                roundClock();
-            }
-            
+           
             function handleZero(timeComponent)
             {
                 if(timeComponent < 10)
@@ -56,58 +58,62 @@ body {
            
             function lineFillClock()
             {
-                context_line.clearRect(0, 0, 200, 200);
+                line_context.clearRect(0, 0, line_canvas_width, line_canvas_height);
                 var ctime = (new Date());
-                var h = handleZero(ctime.getHours());
-                var mins = handleZero(ctime.getMinutes());
-                var secs = handleZero(ctime.getSeconds());
+                var h = ctime.getHours();
+                var mins = ctime.getMinutes();
+                var secs = ctime.getSeconds();
 
                 var ms = ctime.getMilliseconds();
 
-                context_line.beginPath();
-                context_line.moveTo(barStart, barGroupHeightOffset);
-                context_line.lineTo(barEnd, barGroupHeightOffset);
-                context_line.moveTo(barStart, barGroupHeightOffset + 10);
-                context_line.lineTo(barEnd, barGroupHeightOffset + 10);
-                context_line.moveTo(barStart, barGroupHeightOffset + 20);
-                context_line.lineTo(barEnd, barGroupHeightOffset + 20);
-                context_line.lineWidth = 2;
-                context_line.strokeStyle = "#62478F";
-                context_line.stroke();
+                line_context.beginPath();
+                line_context.moveTo(barStart, barGroupHeightOffset);
+                line_context.lineTo(barEnd, barGroupHeightOffset);
+                line_context.moveTo(barStart, barGroupHeightOffset + 10);
+                line_context.lineTo(barEnd, barGroupHeightOffset + 10);
+                line_context.moveTo(barStart, barGroupHeightOffset + 20);
+                line_context.lineTo(barEnd, barGroupHeightOffset + 20);
+                line_context.lineWidth = 2;
+                line_context.strokeStyle = "#62478F";
+                line_context.stroke();
+				line_context.closePath();
 
                 // Hours
-                context_line.beginPath();
-                context_line.lineWidth = 5;
+                line_context.beginPath();
+                line_context.lineWidth = 5;
                 barLength = (((barEnd - barStart) / 24) * h) + (((barEnd - barStart) / 1440) * mins)
-                context_line.moveTo(barStart, barGroupHeightOffset);
-                context_line.lineTo(barLength + barStart, barGroupHeightOffset);
-                context_line.strokeStyle = "#95B285";
-                context_line.stroke();
+                line_context.moveTo(barStart, barGroupHeightOffset);
+                line_context.lineTo(barLength + barStart, barGroupHeightOffset);
+                line_context.strokeStyle = "#95B285";
+                line_context.stroke();
+				line_context.closePath();
 
                 // 
-                context_line.beginPath();
-                context_line.lineWidth = 5;
+                line_context.beginPath();
+                line_context.lineWidth = 5;
                 barLength = (((barEnd - barStart) / 60) * mins) + (((barEnd - barStart) / 3600) * secs)
-                context_line.moveTo(barStart, barGroupHeightOffset + 10);
-                context_line.lineTo(barLength + barStart, barGroupHeightOffset + 10);
-                context_line.strokeStyle = "#C1AF27";
-                context_line.stroke();
+                line_context.moveTo(barStart, barGroupHeightOffset + 10);
+                line_context.lineTo(barLength + barStart, barGroupHeightOffset + 10);
+                line_context.strokeStyle = "#C1AF27";
+                line_context.stroke();
+				line_context.closePath();
 
                 // Seconds
-                context_line.beginPath();
-                context_line.lineWidth = 5;
+                line_context.beginPath();
+                line_context.lineWidth = 5;
                 barLength = (((barEnd - barStart) / 60000) * ms) + (((barEnd - barStart) / 60) * secs)
-                context_line.moveTo(barStart, barGroupHeightOffset + 20);
-                context_line.lineTo(barLength + barStart, barGroupHeightOffset + 20);
-                context_line.strokeStyle = "#8C1D74";
-                context_line.stroke();
+                line_context.moveTo(barStart, barGroupHeightOffset + 20);
+                line_context.lineTo(barLength + barStart, barGroupHeightOffset + 20);
+                line_context.strokeStyle = "#8C1D74";
+                line_context.stroke();
+				line_context.closePath();
 
-                t=setTimeout(function(){doload()},5);
+                requestAnimationFrame(lineFillClock);
             }
 
-            function roundClock()
+            function roundFillClock()
             {
-                context_round.clearRect(0, 0, 200, 200);
+                round_context.clearRect(0, 0, round_canvas_width, round_canvas_height);
                 
                 var ctime = (new Date());
                 var h = ctime.getHours();
@@ -121,63 +127,62 @@ body {
                 var x = canvas.width / 2;
                 var y = canvas.height / 2;
                 
-                context_round.textAlign = "center";
-                context_round.font = "15px Consolas";
-				context_round.fillStyle = "#95B285";
-                context_round.fillText(clockString, x, y);
+                round_context.textAlign = "center";
+                round_context.font = "15px Consolas";
+				round_context.fillStyle = "#95B285";
+                round_context.fillText(clockString, x, y);
 				
-				context_round.beginPath();
-                context_round.lineWidth = 2;
-                context_round.arc(100, 100, 80, -0.5 * Math.PI,1.5 * Math.PI, false);
-                context_round.strokeStyle = "#62478F";
-                context_round.stroke();
+				round_context.beginPath();
+                round_context.lineWidth = 2;
+                round_context.arc(x, y, 80, -0.5 * Math.PI,1.5 * Math.PI, false);
+                round_context.strokeStyle = "#62478F";
+                round_context.stroke();
+				round_context.closePath();
 				
-				context_round.beginPath();
-                context_round.lineWidth = 2;
-                context_round.arc(100, 100, 70, -0.5 * Math.PI,1.5 * Math.PI, false);
-                context_round.strokeStyle = "#62478F";
-                context_round.stroke();
+				round_context.beginPath();
+                round_context.lineWidth = 2;
+                round_context.arc(x, y, 70, -0.5 * Math.PI,1.5 * Math.PI, false);
+                round_context.strokeStyle = "#62478F";
+                round_context.stroke();
+				round_context.closePath();
 				
-				context_round.beginPath();
-                context_round.lineWidth = 2;
-                context_round.arc(100, 100, 60, -0.5 * Math.PI,1.5 * Math.PI, false);
-                context_round.strokeStyle = "#62478F";
-                context_round.stroke();
+				round_context.beginPath();
+                round_context.lineWidth = 2;
+                round_context.arc(x, y, 60, -0.5 * Math.PI,1.5 * Math.PI, false);
+                round_context.strokeStyle = "#62478F";
+                round_context.stroke();
+				round_context.closePath();
 				
                 // Hours
-                context_round.beginPath();
-                context_round.lineWidth = 10;
-                context_round.arc(100, 100, 80, 1.5 * Math.PI, (-0.5 + ((2.0/1440.0)*(h * 60.0 + mins)))* Math.PI, false);
-                context_round.strokeStyle = "#95B285";
-                context_round.stroke();
+                round_context.beginPath();
+                round_context.lineWidth = 10;
+                round_context.arc(x, y, 80, 1.5 * Math.PI, (-0.5 + ((2.0/1440.0)*(h * 60.0 + mins)))* Math.PI, false);
+                round_context.strokeStyle = "#95B285";
+                round_context.stroke();
+				round_context.closePath();
                 
                 // Minutes
-                context_round.beginPath();
-                context_round.lineWidth = 10;
-                context_round.arc(100, 100, 70, 1.5 * Math.PI, (-0.5 + ((2.0/3600.0)*(mins * 60.0 + secs))) * Math.PI, false);
-                context_round.strokeStyle = "#C1AF27";
-                context_round.stroke();
+                round_context.beginPath();
+                round_context.lineWidth = 10;
+                round_context.arc(x, y, 70, 1.5 * Math.PI, (-0.5 + ((2.0/3600.0)*(mins * 60.0 + secs))) * Math.PI, false);
+                round_context.strokeStyle = "#C1AF27";
+                round_context.stroke();
+				round_context.closePath();
                 
                 // Seconds
-                context_round.beginPath();
-                context_round.lineWidth = 10;
-                context_round.arc(100, 100, 60, 1.5 * Math.PI, (-0.5 + ((2.0/60000.0)*(secs * 1000.0 + ms))) * Math.PI, false);
-                context_round.strokeStyle = "#8C1D74";
-                context_round.stroke();
+                round_context.beginPath();
+                round_context.lineWidth = 10;
+                round_context.arc(x, y, 60, 1.5 * Math.PI, (-0.5 + ((2.0/60000.0)*(secs * 1000.0 + ms))) * Math.PI, false);
+                round_context.strokeStyle = "#8C1D74";
+                round_context.stroke();
+				round_context.closePath();
                 
-                t=setTimeout(function(){doload()},5);
+                requestAnimationFrame(roundFillClock);
             }
+			
+			lineFillClock();
+            roundFillClock();
 
         </script>
-    </head>
-    <body>
-        <div class="parent">
-            <div class="row">
-                <div class="col1"> <canvas width = "200" height = "200" id = "canvas_round"></canvas></div>
-            </div>
-            <div class="row">
-                <div class="col1"> <canvas width = "200" height = "200" id = "canvas_line"></canvas></div>
-            </div>
-        </div>
     </body>
 </html>
