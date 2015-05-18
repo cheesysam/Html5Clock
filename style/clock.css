@@ -1,0 +1,16 @@
+* { margin:0; padding:0; } 
+
+html {
+	width:100%; 
+	height:100%;
+}
+body {
+    background-color: #482483;
+	width:100%; 
+	height:100%;
+}
+div.parent {width:100%; height:100%;}
+div.row_line {width:100%; height:20%;}
+div.row_round {width:100%; height:80%;}
+div.col1 {width:100%; height:100%;}
+canvas { display:block; }
