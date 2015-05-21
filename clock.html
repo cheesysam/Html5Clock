@@ -1,120 +1,54 @@
+<!DOCTYPE html>
 <html>
     <head>
-        <script type = "text/javascript">
-            
-            window.onload=doload;
-            var barStart = 10;
-            var barEnd = 390;
-            var barLength = 0;
-
-            var barGroupHeightOffset = 50;
-
-            function doload(){
-                
-                if(document.getElementById('canvas').getContext)context=document.getElementById('canvas').getContext('2d');
-                context.save();
-
-                //lineFillClock();
-                roundClock();
-            }
-            
-            function handleZero(timeComponent){
-                if(timeComponent < 10){
-                    return "0" + timeComponent;
-                }else{
-                    return timeComponent;
-                }
-            }
-            function lineFillClock(){
-
-                context.clearRect(0, 0, 400, 200);
-                var ctime = (new Date());
-                var h = handleZero(ctime.getHours());
-                var m = handleZero(ctime.getMinutes());
-                var s = handleZero(ctime.getSeconds());
-
-                var ms = ctime.getMilliseconds();
-
-                var clockString = "" + h + ":" + m + ":" + s
-                //context.textAlign = "center";
-                context.font = "15px Arial";
-                context.fillText(clockString, 10, 15);
-
-                context.beginPath();
-                context.moveTo(barStart, barGroupHeightOffset);
-                context.lineTo(barEnd, barGroupHeightOffset);
-                context.moveTo(barStart, barGroupHeightOffset + 10);
-                context.lineTo(barEnd, barGroupHeightOffset + 10);
-                context.moveTo(barStart, barGroupHeightOffset + 20);
-                context.lineTo(barEnd, barGroupHeightOffset + 20);
-                context.lineWidth = 2;
-                context.strokeStyle = "#404040";
-                context.stroke();
-
-                context.beginPath();
-                context.lineWidth = 5;
-                barLength = (((barEnd - barStart) / 24) * h) + (((barEnd - barStart) / 1440) * m)
-                context.moveTo(barStart, barGroupHeightOffset);
-                context.lineTo(barLength + barStart, barGroupHeightOffset);
-                context.strokeStyle = "#185B63";
-                context.stroke();
-
-                context.beginPath();
-                context.lineWidth = 5;
-                barLength = (((barEnd - barStart) / 60) * m) + (((barEnd - barStart) / 3600) * s)
-                context.moveTo(barStart, barGroupHeightOffset + 10);
-                context.lineTo(barLength + barStart, barGroupHeightOffset + 10);
-                context.strokeStyle = "#C0261C";
-                context.stroke();
-
-                context.beginPath();
-                context.lineWidth = 5;
-                barLength = (((barEnd - barStart) / 60000) * ms) + (((barEnd - barStart) / 60) * s)
-                context.moveTo(barStart, barGroupHeightOffset + 20);
-                context.lineTo(barLength + barStart, barGroupHeightOffset + 20);
-                context.strokeStyle = "#C59538";
-                context.stroke();
-
-                t=setTimeout(function(){doload()},5);
-            }
-
-            function roundClock(){
-                context.clearRect(0, 0, 400, 200);
-                
-                var ctime = (new Date());
-                var h = handleZero(ctime.getHours());
-                var m = handleZero(ctime.getMinutes());
-                var s = handleZero(ctime.getSeconds());
-                var ms = ctime.getMilliseconds();
-
-                var clockString = "" + h + ":" + m + ":" + s
-                //context.textAlign = "center";
-                context.font = "15px Arial";
-                context.fillText(clockString, 10, 15)
-
-                context.beginPath();
-                context.lineWidth = 10;
-                context.moveTo(100, 20);
-                //context.lineTo(100, 19);
-                context.arcTo(200, 20, 145, 110, 90);
-                context.stroke();
-
-                /*context.beginPath();
-                context.lineWidth = 10;
-                context.arc(100, 100, 80, 1.5 * Math.PI, (((Math.PI * 1.5) / 60) * m) + ((Math.PI * 1.5) / 3600) * s , false);
-                context.stroke();
-
-                context.beginPath();
-                context.lineWidth = 10;
-                context.arc(100, 100, 70, 1.5 * Math.PI, (((0) / 24) * h) + ((Math.PI * 1.5) / 1440) * m , false);
-                context.stroke();*/
-
-                t=setTimeout(function(){doload()},5);
-            }
-
-        </script>
+	<title>Smooth Clock</title>
+	<link href="style/clock.css" type="text/css" rel="stylesheet">
+	<script src="scripts/clock.js"></script>      
     </head>
     <body>
-        <canvas width = "400" height = "200" id = "canvas"></canvas>
+        <div class="parent">
+            <div class="row_round">
+                <div class="col1" id="conround"> <canvas id = "canvas_round"></canvas></div>
+            </div>
+            <div class="row_line">
+                <div class="col1" id="conline"> <canvas id = "canvas_line"></canvas></div>
+            </div>
+        </div>
+		<script type="text/javascript">
+            
+            var line_canvas = document.getElementById("canvas_line");
+			var line_context = line_canvas.getContext('2d');
+			
+			var round_canvas = document.getElementById("canvas_round");
+			var round_context = round_canvas.getContext('2d');
+ 
+			var line_canvas_width = line_canvas.width;
+			var line_canvas_height = line_canvas.height;
+			
+			var round_canvas_width = round_canvas.width;
+			var round_canvas_height = round_canvas.height;
+			
+			var round_clock_radius = 80.0/200.0;
+			var round_clock_max_radius = round_clock_radius * round_canvas_height;
+			 
+			var angle = 0;
+			 
+			var requestAnimationFrame = window.requestAnimationFrame || 
+										window.mozRequestAnimationFrame || 
+										window.webkitRequestAnimationFrame || 
+										window.msRequestAnimationFrame;
+            var barStart = 10;
+            var barEnd = line_canvas_width - 10;
+            var barLength = 0;
+
+            var barGroupHeightOffset = 10;
+			
+			// resize the canvas to fill browser window dynamically
+			window.addEventListener('resize', resizeCanvas, false);
+			resizeCanvas();		
+			lineFillClock();
+            roundFillClock();
+
+        </script>
     </body>
 </html>
